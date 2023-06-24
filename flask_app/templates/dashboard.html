@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>FITON Home Page</title>
+</head>
+<body id="my-background">
+    <div id="background-container"></div>    
+    <nav class="navbar2 flex justify-between items-center py-4 px-8 bg-red-400 text-white border-b-2 border-black">
+        <div class="logo2-container relative">
+            <div class="h-16 w-16 rounded-full overflow-hidden" onclick="toggleDropdown()">
+                <img src="{{ url_for('static', filename='uploads/' + user.profile_picture) }}" alt="Profile Picture" class="h-full w-full object-cover">
+            </div>
+            <div id="dropdown" class="dropdown hidden absolute bg-white py-2 mt-2 w-32 rounded shadow-lg">
+                <a href="/user/{{user.id}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">My Profile</a>
+                <a href="/user/edit/{{user.id}}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Edit Profile</a>
+            </div>
+        </div>
+        <div class="text-center">
+            <h1 class="text-7xl font-bold mb-4">Friends in Town, or Nah?</h1>
+        </div>
+        <div class="logout-container">
+            <a href="/logout" class="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Logout</a>
+        </div>
+    </nav>
+
+    <div class="container mx-auto mt-8 max-w-7xl">
+        <div class="container-wrapper bg-yellow-200 rounded-lg border-2 border-black">
+            <div class="bg-red-400 text-center p-5 text-white rounded-t">
+                <h1 class="text-4xl font-bold mb-4">Welcome Back to the F.I.T.O.N. app, {{user.first_name}}</h1>
+                <h2 class="text-2xl mb-2">Current Location: {{user.user_location}}</h2>
+            </div>
+            
+            <form id="availability-form" action="/update_availability" method="POST">
+                <div class="container mx-auto mt-8">
+                    <div class="container-wrapper bg-red-400 flex">
+                        <div class="flex-grow p-4">
+                            <div class="bg-gray-300 mb-5 text-center rounded">
+                                <p class="text-black text-xl font-bold mb-2">My Availability</p>
+                                <p class="text-green-600 text-lg font-bold">Green = Available</p>
+                                <p class="text-yellow-400 text-lg font-bold">Yellow = Busy</p>
+                                <p class="text-red-600 text-lg font-bold mb-5">Red = Out of Town</p>
+                                <p class="text-black text-lg font-bold mb-5">(Click to change availability status)</p>
+                            </div>
+
+                            <div class="white-box h-24 rounded-lg overflow-auto">
+                                <table class="calendar-table">
+                                    <thead>
+                                        <tr id="calendar-dates">
+                                            <th>Sunday</th>
+                                            <th>Monday</th>
+                                            <th>Tuesday</th>
+                                            <th>Wednesday</th>
+                                            <th>Thursday</th>
+                                            <th>Friday</th>
+                                            <th>Saturday</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="calendar-body">
+                                        <tr id="calendar-dates-row"></tr>
+                                        <tr id="calendar-availability-row"></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button type="submit" id="save-button" class="button bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded mt-2">Update Availability</button>
+                        </div>                
+                    </div>
+                </div>
+            </form>
+
+            <div class="container-wrapper bg-blue-400 mt-5">
+                <h2 class="text-2xl text-center text-white font-bold">{{friend.name}} Members (Group ID Number: <span class="text-yellow-300">{{friend.id}}</span>)</h2>
+                <div id="group-members" class="grid grid-cols-2 gap-4 px-8 py-4">
+                    {% for member in groupMembers %}
+                    <div class="member-card bg-gray-200 rounded-lg p-4 w-">
+                        <img class="h-16 w-16 rounded-full object-cover" src="{{ url_for('static', filename='uploads/' + member.profile_picture) }}" alt="Profile Picture">
+                        <p class="text-lg font-bold mt-2 text-red-500 hover:text-yellow-500">
+                            <a href="/user/{{member.id}}">
+                                {{member.first_name }} {{ member.last_name }}
+                            </a>
+                        </p>               
+                        <p class="ml-2 text-blue-600"><span class="text-black"><strong>Current Status: </strong></span>{{ member.status }}</p>
+                        <div class="weekly-calendar mt-4">
+                            <div class="weekdays grid grid-cols-7 gap-2">
+                                <div class="day-cell">Sun</div>
+                                <div class="day-cell">Mon</div>
+                                <div class="day-cell">Tue</div>
+                                <div class="day-cell">Wed</div>
+                                <div class="day-cell">Thu</div>
+                                <div class="day-cell">Fri</div>
+                                <div class="day-cell">Sat</div>
+                            </div>
+                            <div class="availability-grid grid grid-cols-7 gap-2">
+                                <div class="day-cell {% if member.sunday == 'available' %}bg-green-400{% elif member.sunday == 'busy' %}bg-yellow-400{% elif member.sunday == 'out-of-town' %}bg-red-400{% endif %}">
+                                    {% if member.sunday %}
+                                        <div class="availability-dot"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="day-cell {% if member.monday == 'available' %}bg-green-400{% elif member.monday == 'busy' %}bg-yellow-400{% elif member.monday == 'out-of-town' %}bg-red-400{% endif %}">
+                                    {% if member.monday %}
+                                        <div class="availability-dot"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="day-cell {% if member.tuesday == 'available' %}bg-green-400{% elif member.tuesday == 'busy' %}bg-yellow-400{% elif member.tuesday == 'out-of-town' %}bg-red-400{% endif %}">
+                                    {% if member.tuesday %}
+                                        <div class="availability-dot"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="day-cell {% if member.wednesday == 'available' %}bg-green-400{% elif member.wednesday == 'busy' %}bg-yellow-400{% elif member.wednesday == 'out-of-town' %}bg-red-400{% endif %}">
+                                    {% if member.wednesday %}
+                                        <div class="availability-dot"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="day-cell {% if member.thursday == 'available' %}bg-green-400{% elif member.thursday == 'busy' %}bg-yellow-400{% elif member.thursday == 'out-of-town' %}bg-red-400{% endif %}">
+                                    {% if member.thursday %}
+                                        <div class="availability-dot"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="day-cell {% if member.friday == 'available' %}bg-green-400{% elif member.friday == 'busy' %}bg-yellow-400{% elif member.friday == 'out-of-town' %}bg-red-400{% endif %}">
+                                    {% if member.friday %}
+                                        <div class="availability-dot"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="day-cell {% if member.saturday == 'available' %}bg-green-400{% elif member.saturday == 'busy' %}bg-yellow-400{% elif member.saturday == 'out-of-town' %}bg-red-400{% endif %}">
+                                    {% if member.saturday %}
+                                        <div class="availability-dot"></div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div id="map-container-{{ member.id }}" style="height: 300px; width: 100%;" class="mt-7"></div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="mt-8 mb-8 flex justify-between">
+                <button class="mx-auto bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="updateLocation()">Update Location</button>
+            
+                <a href="/status/{{user.id}}" class="button mx-auto bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">New Status Update</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadMapScript() {
+            var script = document.createElement("script");
+            script.src =
+            "https://maps.googleapis.com/maps/api/js?key=AIzaSyALI9tf-ASS6s8BIVY-HQ9O6qL3PGqjpTU&callback=initMap";
+            script.defer = true;
+            script.async = true;
+            document.body.appendChild(script);
+        }
+        
+        function initMap() {
+            {% for member in groupMembers %}
+            var mapContainer{{ member.id }} = document.getElementById("map-container-{{ member.id }}");
+            var latitude{{ member.id }} = {{ member.latitude }};
+            var longitude{{ member.id }} = {{ member.longitude }};
+            
+            // Create the map
+            var map{{ member.id }} = new google.maps.Map(mapContainer{{ member.id }}, {
+                center: { lat: latitude{{ member.id }}, lng: longitude{{ member.id }} },
+                zoom: 8
+            });
+            
+            // Create a marker at the member's coordinates
+            var marker{{ member.id }} = new google.maps.Marker({
+                position: { lat: latitude{{ member.id }}, lng: longitude{{ member.id }} },
+                map: map{{ member.id }},
+                title: "{{ member.name }}"
+            });
+            {% endfor %}
+        }
+
+        loadMapScript();
+
+    </script>
+
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.classList.toggle('hidden');
+        }
+    </script>
+
+    <script>
+        function updateCellColors(availability) {
+            const calendarAvailabilityRow = document.getElementById('calendar-availability-row');
+            for (const day in availability) {
+                const cell = calendarAvailabilityRow.querySelector(`#${day.toLowerCase()}`);
+                const status = availability[day];
+                if (status === 'available') {
+                cell.classList.add('available');
+                } else if (status === 'busy') {
+                cell.classList.add('busy');
+                } else if (status === 'out-of-town') {
+                cell.classList.add('out-of-town');
+                }
+            }
+        }
+
+
+        function generateCalendar() {
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth();
+            const currentDate = today.getDate();
+            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+            const calendarDatesRow = document.getElementById('calendar-dates');
+            const calendarDatesRowTable = document.getElementById('calendar-dates-row');
+            const calendarAvailabilityRow = document.getElementById('calendar-availability-row');
+            calendarDatesRow.innerHTML = '';
+            calendarAvailabilityRow.innerHTML = '';
+
+            const startOfWeek = new Date(currentYear, currentMonth, currentDate - today.getDay());
+            for (let i = 0; i < 7; i++) {
+                const calendarDate = new Date(startOfWeek.getFullYear(), startOfWeek.getMonth(), startOfWeek.getDate() + i);
+                const day = daysOfWeek[i];
+                const date = calendarDate.getDate();
+                const month = calendarDate.getMonth() + 1;
+
+                const calendarDateCell = document.createElement('th');
+                calendarDateCell.textContent = `${day} ${month}/${date}`;
+                calendarDatesRow.appendChild(calendarDateCell);
+
+                const calendarAvailabilityCell = document.createElement('td');
+                calendarAvailabilityCell.id = day.toLowerCase(); // Set the ID of the cell to the lowercase day name
+                calendarAvailabilityCell.classList.add('availability-box');
+                calendarAvailabilityCell.addEventListener('click', toggleAvailability);
+                calendarAvailabilityRow.appendChild(calendarAvailabilityCell);
+            }
+            fetchAvailability();
+        }
+
+        const availabilityStatus = {};
+
+        function toggleAvailability(event) {
+            const cell = event.target;
+            const cellId = cell.id; // Get the ID of the cell
+
+            if (cell.classList.contains("available")) {
+                cell.classList.remove("available");
+                cell.classList.add("busy");
+                availabilityStatus[cellId] = "busy"; // Use the cell ID to assign the availability status
+            } else if (cell.classList.contains("busy")) {
+                cell.classList.remove("busy");
+                cell.classList.add("out-of-town");
+                availabilityStatus[cellId] = "out-of-town";
+            } else if (cell.classList.contains("out-of-town")) {
+                cell.classList.remove("out-of-town");
+                cell.classList.add("available");
+                availabilityStatus[cellId] = "available";
+            } else {
+                cell.classList.add("busy");
+                availabilityStatus[cellId] = "busy";
+            }
+        }
+
+        document.getElementById("availability-form").addEventListener("submit", saveAvailability);
+
+        function saveAvailability(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            for (const day in availabilityStatus) {
+            const status = availabilityStatus[day];
+            formData.append(day.toLowerCase(), status);
+            }
+
+            fetch("/update_availability", {
+                method: "POST",
+                body: formData,
+            })
+                .then(response => response.json())
+                .then(data => {
+                if (data.message === "Availability updated successfully") {
+                    alert("Availability saved successfully!");
+                } else {
+                    alert("Failed to save availability. Please try again.");
+                }
+                })
+                .catch(error => {
+                console.error("Error:", error);
+                alert("An error occurred while saving availability.");
+                });
+        }
+
+        function updateAvailability() {
+            const formData = new FormData();
+
+            for (const day in availabilityStatus) {
+                formData.append(day, availabilityStatus[day]); // Append the day and status to the form data
+            }
+
+            fetch('/update_availability', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+
+        function fetchAvailability() {
+            fetch('/get_availability')
+                .then(response => response.json())
+                .then(data => {
+                const availability = data.availability; // Assuming the availability data is returned in the `data.availability` field
+                updateCellColors(availability);
+                })
+                .catch(error => {
+                console.error('Error:', error);
+                });
+        }
+
+        generateCalendar();
+
+                function generateGroupMemberCard(user) {
+            const cardContainer = document.createElement('div');
+            cardContainer.classList.add('bg-gray-200', 'rounded-lg', 'p-4');
+
+            const profilePicture = document.createElement('img');
+            profilePicture.classList.add('h-16', 'w-16', 'rounded-full', 'object-cover');
+            profilePicture.src = "{{ url_for('static', filename='uploads/' + user.profile_picture) }}";
+            cardContainer.appendChild(profilePicture);
+
+            const memberName = document.createElement('p');
+            memberName.classList.add('text-lg', 'font-bold', 'mt-2');
+            memberName.textContent = `${user.first_name} ${user.last_name}`;
+            cardContainer.appendChild(memberName);
+
+            const memberAvailability = document.createElement('p');
+            memberAvailability.classList.add('text-sm');
+            memberAvailability.textContent = `Availability: ${user.availability}`;
+            cardContainer.appendChild(memberAvailability);
+
+            // Add more user information as needed
+
+            return cardContainer;
+        }
+
+        function displayGroupMembers(users) {
+            const groupMembersContainer = document.getElementById('group-members');
+            groupMembersContainer.innerHTML = '';
+
+            users.forEach(user => {
+                const memberCard = generateGroupMemberCard(user);
+                groupMembersContainer.appendChild(memberCard);
+            });
+        }
+
+        function updateLocation() {
+            // Create a geolocation object
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+        }
+
+        function successCallback(position) {
+            // Get the latitude and longitude from the geolocation object
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+
+            // Create an object with the latitude and longitude
+            var locationData = {
+            latitude: latitude,
+            longitude: longitude
+            };
+
+            // Send an AJAX request to the backend
+            fetch('/update-location', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(locationData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+                // Handle the response as needed
+            })
+            .catch(error => {
+                console.error('Error updating location:', error);
+                // Handle the error
+            });
+        }
+
+        function errorCallback(error) {
+            console.error('Geolocation error:', error);
+            // Handle the geolocation error
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+    <script>
+        VANTA.FOG('#background-container')
+    </script>
+
+</body>
+</html>

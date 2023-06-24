@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Friends in Town, Or Nah?</title>
+</head>
+<body id="my-background">
+    <div class="container bg-yellow-200 mx-auto rounded-lg border-2 border-black max-w-screen-md main-container shadow-md">
+        <div class="bg-red-400 text-white py-4 px-8 rounded">
+            <div class="container mx-auto max-w-screen-lg">
+                <div class="flex justify-between items-center">
+                    <button id="registerBtn" class="mr-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Register</button>
+                    <h1 class="text-4xl font-bold text-white">Friends in Town, or Nah?</h1>
+                    <button id="loginBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Login</button>
+                </div>
+            </div>                
+        </div>
+
+        <div class="flex flex-col items-center mt-8">
+            <h1 class="text-2xl font-semibold">"Be in the Know, Wherever You Go!"</h1>
+            <h3 class="text-gray-600 mt-2">With the F.I.T.O.N. app, you'll never wonder where members of your budding friend group is ever again!</h3>
+        </div>
+
+        <div class="flex justify-center mt-8">
+            <img src="{{ url_for('static', filename='img/looking-around.gif') }}" class="max-w-full p-10 mb-24">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("registerBtn").addEventListener("click", function() {
+            window.location.href = "/register";
+        });
+
+        document.getElementById("loginBtn").addEventListener("click", function() {
+            window.location.href = "/login";
+        }); l
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+    <script>
+        VANTA.FOG('#my-background')
+    </script>
+    
+</body>
+</html>

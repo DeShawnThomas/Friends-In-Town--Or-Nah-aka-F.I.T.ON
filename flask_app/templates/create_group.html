@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Create Group</title>
+</head>
+<body id="my-background" class="flex items-center justify-center">
+    <div id="background-container"></div>
+    <div class="container mx-auto main-container rounded-md">
+        <div class="content bg-yellow-200 rounded-lg border-2 border-black">
+            <div class="bg-red-400 rounded-t-md">
+                <a href="{{ url_for('login') }}" class="float-right text-white p-8">Already have an account, again but still ended up here? Click here to login.</a>
+                <div class="title text-4xl font-bold text-white mb-8 p-8">Create Group</div>
+            </div>
+
+            <h1 class="text-2xl font-bold text-center mt-8">Fill out the form below to create a new group and get an ID #.</h1>
+
+            <div class="flex justify-center mt-8">
+                <form action="/group-made" method="post" id="createGroupForm" class="w-full max-w-sm">
+                    <div>
+                        <div class="input-box">
+                            <span class="details">
+                                <label for="name">Group Name:</label>
+                            </span>
+                            <input type="text" id="name" name="name" placeholder="Enter the group name" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-8">
+                        <input type="submit" value="Create Group" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md mb-5">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="popup" class="hidden fixed inset-0 flex items-center justify-center z-50 bg-blue-500 bg-opacity-50 text-green-600">
+        <div class="bg-white p-8 rounded-md">
+            <h2 class="text-2xl font-bold mb-4">Group ID:</h2>
+            <p class="text-xl font-semibold" id="groupID"></p>
+            <p class="text-center mt-4">You can use this Group ID to register.</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+    <script>
+        VANTA.FOG('#background-container')
+    
+        document.getElementById('createGroupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            var xhr = new XMLHttpRequest();
+            var formData = new FormData(this);
+            
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    var groupID = response.group_id;
+                    
+                    document.getElementById('groupID').innerText = groupID;
+                    document.getElementById('popup').classList.remove('hidden');
+                    
+                    setTimeout(function() {
+                        document.getElementById('popup').classList.add('hidden');
+                        window.location.href = "/register?friend_id=" + groupID;
+                    }, 4000);
+                }
+            };
+            
+            xhr.open("POST", "/group-made");
+            xhr.send(formData);
+        });
+    </script>
+</body>
+</html>

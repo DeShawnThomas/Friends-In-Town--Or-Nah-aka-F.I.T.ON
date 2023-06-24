@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Profile Page</title>
+</head>
+<body id="my-background">
+
+    <div id="background-container"></div>
+
+    <div class="nav3 flex justify-between items-center py-4 px-8 bg-red-400 text-white border-b-2 border-black">
+        <h1 class="text-5xl font-bold">My Profile</h1>
+        <a href="/dashboard" class="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Dashboard</a>
+    </div>
+    
+    <div class="container mx-auto mt-8 main-container max-w-3xl">
+        <div class="flex justify-center">
+            <div class="max-w-3xl bg-gray-300 p-8 rounded border-2 border-black overflow-hidden shadow-lg">
+                <div class="px-6 py-4">
+                    <h2 class="text-3xl text-center text-yellow-500 font-bold mb-2">{{ user.first_name }} {{ user.last_name }}</h2>
+                    <img src="{{ url_for('static', filename='uploads/' + user.profile_picture) }}" alt="Profile Picture" class="w-full">
+                </div>
+                <ul class="list-group list-group-flush text-center">
+                    <ul class="list-group-item">
+                        <p class="text-yellow-500 font-bold text-base mb-2">Bio:</p>
+                        <ul class="list-disc pl-6 mb-2">
+                            <ul>{{ user.about_me }}</ul>
+                        </ul>
+                    </ul>
+                    <ul class="list-group-item">
+                        <p class="text-yellow-500 font-bold text-base mb-2">Current Location:</p>
+                        <ul class="list-disc pl-6">
+                            <div id="map"></div>
+                        </ul>
+                    </ul>
+                    <ul class="list-group-item">
+                        <p class="text-yellow-500 font-bold text-base mt-2 mb-2">Birthday:</p>
+                        <ul class="list-disc pl-6 mb-2">
+                            <ul>{{ user.birthday.strftime('%B %dth, %Y') }}</ul>
+                        </ul>
+                    </ul>
+                    <ul class="list-group-item">
+                        <p class="text-yellow-500 font-bold text-base mb-2">Contact Information:</p>
+                        <ul class="list-disc pl-6 mb-2">
+                            <ul><strong>Email:</strong> {{ user.email }}</ul>
+                            <ul><strong>Phone Number:</strong> {{ user.phone_number }}</ul>
+                        </ul>
+                    </ul>
+                    <ul class="list-group-item">
+                        <p class="text-yellow-500 font-bold text-base mb-2">Social Media:</p>
+                        <ul class="list-disc pl-6 text-left">
+                            <div class="flex justify-evenly">
+                                <ul class="list-disc pl-6">
+                                    <ul>
+                                        <img src="{{ url_for('static', filename='img/' + social_media_icons['facebook']) }}" style="width: 50px; height: 50px;">
+                                        <a href="https://www.facebook.com/{{ user.facebook }}" class="hover:text-blue-700">/{{ user.facebook }}</a>
+                                    </ul>
+                                    <ul>
+                                        <img src="{{ url_for('static', filename='img/' + social_media_icons['twitter']) }}" style="width: 50px; height: 50px;">
+                                        <a href="https://www.twitter.com/{{ user.twitter }}" class="hover:text-blue-400">@{{ user.twitter }}</a>
+                                    </ul>
+                                    <ul>
+                                        <img src="{{ url_for('static', filename='img/' + social_media_icons['instagram']) }}" style="width: 50px; height: 50px;">
+                                        <a href="https://www.instagram.com/{{ user.instagram }}/" class="hover:text-red-500">@{{ user.instagram }}</a>
+                                    </ul>
+                                </ul>
+                                <ul class="list-disc pl-6">
+                                    <ul class="hover:text-yellow-500">
+                                        <img src="{{ url_for('static', filename='img/' + social_media_icons['snapchat']) }}" style="width: 50px; height: 50px;"> {{ user.snapchat }}
+                                    </ul>
+                                    <ul>
+                                        <img src="{{ url_for('static', filename='img/' + social_media_icons['linkedin']) }}" style="width: 50px; height: 50px;">
+                                        <a href="https://www.linkedin.com/in/{{ user.linkedin }}/" class="hover:text-blue-700">/{{ user.linkedin }}</a>
+                                    </ul>
+                                    <ul>
+                                        <img src="{{ url_for('static', filename='img/' + social_media_icons['tiktok']) }}" style="width: 50px; height: 50px;">
+                                        <a href="https://www.tiktok.com/{{ user.tiktok }}" class="hover:text-green-700">{{ user.tiktok }}</a>
+                                    </ul>
+                                </ul>                            
+                            </div>
+                        </ul>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadMapScript() {
+            var script = document.createElement("script");
+            script.src =
+            "https://maps.googleapis.com/maps/api/js?key=AIzaSyALI9tf-ASS6s8BIVY-HQ9O6qL3PGqjpTU&callback=initMap";
+            script.defer = true;
+            script.async = true;
+            document.body.appendChild(script);
+        }
+        
+        function initMap() {
+            var latitude = parseFloat("{{ user.latitude }}");
+            var longitude = parseFloat("{{ user.longitude }}");
+        
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+            var location = { lat: latitude, lng: longitude };
+        
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center: location,
+                zoom: 12,
+            });
+        
+            // Add a marker at the user's location
+            var marker = new google.maps.Marker({
+                position: location,
+                map: map,
+            });
+            } else {
+            console.log("Invalid latitude or longitude values.");
+            }
+        }
+        
+        // Load the Google Maps API and initialize the map
+        loadMapScript();
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+    <script>
+        VANTA.FOG('#background-container')
+    </script>
+</body>
+</html>

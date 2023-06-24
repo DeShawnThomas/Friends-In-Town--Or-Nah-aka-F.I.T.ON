@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Registration</title>
+</head>
+<body id="my-background">
+    <div id="background-container"></div>
+    <div class="container mx-auto main-container rounded-md">
+        <div class="content bg-yellow-200 rounded-lg border-2 border-black">
+            <div class="bg-red-400 rounded-t-md">
+                <a href="{{ url_for('login') }}" class="float-right text-white p-8">Already have an account? Click here to login.</a>
+                <div class="title text-4xl font-bold text-white mb-8 p-8">Registration</div>
+            </div>
+
+            <h1 class="text-2xl font-bold text-center mt-8">WAIT! Has someone registered a group for you and your friends? If not, click this big button first and make a group and get an ID #.</h1>
+            <div class="flex justify-center m-6">
+                <button onclick="window.location.href='/create-group'" class="bg-red-500 hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-md mb-4">Create Group and Get ID</button>            
+            </div>
+            <h2 class="text-2xl font-bold text-center mt-8 text-blue-500">If you already know your Group ID #, fill out the form below to register your account.</h2>
+
+            <form action="/create" method="post" enctype="multipart/form-data" id="registrationForm">
+            <div class="grid grid-cols-2 gap-4 p-8">
+                    <div class="user-details">
+                        <div class="input-box">
+                            <span class="details">
+                                <label for="first_name">First Name:</label>
+                            </span>
+                            <input type="text" id="first_name" name="first_name" placeholder="Enter your first name" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">
+                                <label for="last_name">Last Name:</label>
+                            </span>
+                            <input type="text" id="last_name" name="last_name" placeholder="Enter your last name" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">
+                                <label for="email">Email:</label>
+                            </span>
+                            <input type="text" id="email" name="email" placeholder="Enter your email" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">
+                                <label for="phone_number">Phone Number:</label>
+                            </span>
+                            <input type="text" id="phone_number" name="phone_number" placeholder="Enter your phone number" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">
+                                <label for="birthday">Birthday:</label>
+                            </span>
+                            <input type="date" id="birthday" name="birthday" placeholder="Enter your birthday" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">
+                                <label for="password">Password:</label>
+                            </span>
+                            <input type="password" id="password" name="password" placeholder="Enter your password" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">
+                                <label for="confirm_password">Confirm Password:</label>
+                            </span>
+                            <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box">
+                            <span class="details">
+                                <label for="about_me">About Me:</label>
+                            </span>
+                            <textarea id="about_me" name="about_me" placeholder="Tell us about yourself" class="border border-gray-300 p-2 rounded-md w-full"></textarea>
+                        </div>
+                    </div>
+                
+                    <div class="right-details">
+                        <div class="input-box col-span-2 md:col-span-1">
+                            <span class="details">
+                                <label for="facebook">Facebook:</label>
+                            </span>
+                            <input type="text" id="facebook" name="facebook" placeholder="Enter your FB profile link (e.g. facebook.com/deshawnxthomas enter 'deshawnxthomas')" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box col-span-2 md:col-span-1">
+                            <span class="details">
+                                <label for="twitter">Twitter:</label>
+                            </span>
+                            <input type="text" id="twitter" name="twitter" placeholder="Enter your Twitter handle WITHOUT the @" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box col-span-2 md:col-span-1">
+                            <span class="details">
+                                <label for="instagram">Instagram:</label>
+                            </span>
+                            <input type="text" id="instagram" name="instagram" placeholder="Enter your Insta handle WITHOUT the @" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box col-span-2 md:col-span-1">
+                            <span class="details">
+                                <label for="snapchat">Snapchat:</label>
+                            </span>
+                            <input type="text" id="snapchat" name="snapchat" placeholder="Enter your Snap INCLUDING the @" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box col-span-2 md:col-span-1">
+                            <span class="details">
+                                <label for="linkedin">LinkedIn:</label>
+                            </span>
+                            <input type="text" id="linkedin" name="linkedin" placeholder="Enter your LinkedIn.. for networking? (e.g. linkedin.com/in/deshawnthomas/ enter 'deshawnthomas')" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box col-span-2 md:col-span-1">
+                            <span class="details">
+                                <label for="tiktok">TikTok:</label>
+                            </span>
+                            <input type="text" id="tiktok" name="tiktok" placeholder="Enter your TikTok INCLUDING the @" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box col-span-2 md:col-span-1">
+                            <span class="details">
+                                <label for="friends_id">Group ID:</label>
+                            </span>
+                            <input type="text" id="friends_id" name="friends_id" placeholder="Enter your group ID number if your friends already have accounts." class="border border-gray-300 p-2 rounded-md w-full">                        </div>                        
+                        <div class="input-box col-span-2 md:col-span-1">
+                            <span class="details">
+                                <label for="profile_picture">Profile Picture:</label>
+                            </span>
+                            <div>
+                                <input type="file" id="profile_picture" name="profile_picture" accept="image/*" class="border border-gray-300 p-2 rounded-md">
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="flex justify-center m-6">
+                <input type="submit" value="Register" class="bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-md" onclick="getUserLocation()">
+            </div>
+
+            </form>
+            
+        </div>
+    </div>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+    <script>
+        VANTA.FOG('#background-container')
+    </script>
+</body>
+</html>

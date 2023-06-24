@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <title>Edit Profile</title>
+</head>
+<body id="my-background">
+
+    <div id="background-container"></div>
+
+    <div class="nav3 flex justify-between items-center py-4 px-8 bg-red-400 text-white border-b-2 border-black">
+        <h1 class="text-5xl font-bold">Edit Profile</h1>
+        <a href="/dashboard" class="button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Dashboard</a>
+    </div>
+    
+    <div class="container mx-auto main-container text-red-500">
+        <div class="max-w-3xl bg-yellow-200 rounded-lg p-8 border-2 border-black mx-auto max-w-lg mt-8">
+            <div class="title text-center text-3xl text-blue-500 font-bold mt-3">Current Profile Information</div>
+
+            <form action="/user/update/{{ user.id }}" method="post" enctype="multipart/form-data">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="user-details">
+                        <div class="input-box my-4">
+                            <span class="details">First Name:</span>
+                            <input type="text" name="first_name" placeholder="Enter your new first name" value="{{ user.first_name }}" required class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Last Name:</span>
+                            <input type="text" name="last_name" placeholder="Enter your new last name" value="{{ user.last_name }}" required class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Email:</span>
+                            <input type="email" name="email" placeholder="Enter your new email" value="{{ user.email }}" required class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Phone Number:</span>
+                            <input type="text" name="phone_number" placeholder="Enter your new phone number" value="{{ user.phone_number }}" required class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Birthday:</span>
+                            <input type="date" name="birthday" placeholder="Enter your new birthday" value="{{ user.birthday }}" required class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Password:</span>
+                            <input type="password" name="password" placeholder="Enter your new password" required class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Confirm Password:</span>
+                            <input type="password" name="confirm_password" placeholder="Confirm your new password" required class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                    </div>
+
+                    <div class="right-details">
+                        <div class="input-box my-4">
+                            <span class="details">Facebook:</span>
+                            <input type="text" name="facebook" placeholder="Enter your new FB profile link (e.g. facebook.com/deshawnxthomas enter 'deshawnxthomas')" value="{{ user.facebook }}" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Twitter:</span>
+                            <input type="text" name="twitter" placeholder="Enter your new Twitter handle WITHOUT the @" value="{{ user.twitter }}" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Instagram:</span>
+                            <input type="text" name="instagram" placeholder="Enter your new Insta handle WITHOUT the @" value="{{ user.instagram }}" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Snapchat:</span>
+                            <input type="text" name="snapchat" placeholder="Enter your new Snap INCLUDING the @" value="{{ user.snapchat }}" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">LinkedIn:</span>
+                            <input type="text" name="linkedin" placeholder="Enter your new LinkedIn.. for networking? (e.g. linkedin.com/in/deshawnthomas/ enter 'deshawnthomas')" value="{{ user.linkedin }}" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">TikTok:</span>
+                            <input type="text" name="tiktok" placeholder="Enter your new TikTok INCLUDING the @" value="{{ user.tiktok }}" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                        <div class="input-box my-4">
+                            <span class="details">Profile Picture:</span>
+                            <input type="file" name="profile_picture" class="border border-gray-300 p-2 rounded-md w-full">
+                        </div>
+                    </div>
+                </div>
+                <div class="input-box my-4">
+                    <span class="details">
+                        <label for="about_me">About Me:</label>
+                    </span>
+                    <textarea id="about_me" name="about_me" placeholder="Tell us about yourself" class="border border-gray-300 p-2 rounded-md w-full">{{user.about_me}}</textarea>
+                </div>
+
+                <div class="button text-center mt-8">
+                    <input type="submit" value="Save Changes" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+    <script>
+        VANTA.FOG('#background-container')
+    </script>
+
+</body>
+</html>

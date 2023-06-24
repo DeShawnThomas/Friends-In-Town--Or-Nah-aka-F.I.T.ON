@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="static/css/styles.css">
+    <title>Login</title>
+</head>
+<body id="my-background">
+    <div class="container mx-auto main-container rounded-lg">
+        <div class="content bg-yellow-200 rounded-lg border-2 border-black">
+            <div class="bg-red-400 p-8 rounded-t-md">
+                <a href="{{ url_for('register') }}" class="float-left text-white">Don't have an account? Click here to register.</a>
+                <div class="title text-4xl font-bold text-white mb-8 text-right">Login</div>
+            </div>
+            <div class="p-8">
+                <form action="/returning" method="post">
+                    <div class="mb-4">
+                        <label for="email" class="text-lg font-semibold">Email or Phone Number:</label>
+                        <input type="text" id="email" name="email" class="border border-gray-300 p-2 rounded-md w-full">
+                    </div>
+                    <div class="mb-6">
+                        <label for="password" class="text-lg font-semibold">Password:</label>
+                        <input type="password" id="password" name="password" class="border border-gray-300 p-2 rounded-md w-full">
+                    </div>
+                    <div class="flex justify-center">
+                        <input type="submit" value="Login" class="bg-blue-500 text-white font-semibold px-4 py-2 rounded-md">
+                    </div>
+                </form>    
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+    <script>
+        VANTA.FOG('#my-background')
+    </script>
+</body>
+</html>
