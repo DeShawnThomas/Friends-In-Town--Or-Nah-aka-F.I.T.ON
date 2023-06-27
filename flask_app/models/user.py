@@ -139,51 +139,49 @@ class User:
     def validate_user(user):
         is_valid = True
         if len(user['first_name']) < 2:
-            flash("First name must be at least 2 characters", "regError")
+            flash("First name must be at least 2 characters")
             is_valid = False
         if len(user['last_name']) < 2:
-            flash("Last name must be at least 2 characters", "regError")
+            flash("Last name must be at least 2 characters")
             is_valid = False
         if len(user['email']) < 1:
-            flash("Email unusable.", "regError")
+            flash("Email unusable.")
             is_valid = False
         if not EMAIL_REGEX.match(user['email']):
-            flash("Incorrect Email", "regError")
+            flash("Incorrect Email")
             is_valid = False
         if len(user['phone_number']) < 2:
-            flash("Phone number must be at least 10 characters", "regError")
+            flash("Phone number must be at least 10 characters")
             is_valid = False
         if len(user['password']) < 8:
-            flash("Password must be at least 8 characters", "regError")
+            flash("Password must be at least 8 characters")
             is_valid = False
         if user['password'] != user['confirm_password']:
             flash("Password and confirmation password do not match.", "register")
             is_valid = False
         if len(user['about_me']) < 2:
-            flash("Description must be at least 2 characters", "regError")
+            flash("Description must be at least 2 characters")
+            is_valid = False
+        if user['facebook'].startswith('/'):
+            flash("Facebook registration must not start with '/'")
+            is_valid = False
+        if user['twitter'].startswith('@'):
+            flash("Twitter registration must not start with '@'")
+            is_valid = False
+        if user['instagram'].startswith('@'):
+            flash("Instagram registration must not start with '@'")
+            is_valid = False
+        if not user['snapchat'].startswith('@'):
+            flash("Snapchat registration must start with '@'")
+            is_valid = False
+        if user['linkedin'].startswith('/'):
+            flash("LinkedIn registration must not start with '/'")
+            is_valid = False
+        if not user['tiktok'].startswith('@'):
+            flash("TikTok registration must start with '@'")
             is_valid = False
         return is_valid
 
     @staticmethod
     def check_password(password_hash, password):
         return check_password_hash(password_hash, password)
-    
-
-        # if user['facebook'].startswith('/'):
-        #     flash("Facebook registration must not start with '/'", "regError")
-        #     is_valid = False
-        # if user['twitter'].startswith('@'):
-        #     flash("Twitter registration must not start with '@'", "regError")
-        #     is_valid = False
-        # if user['instagram'].startswith('@'):
-        #     flash("Instagram registration must not start with '@'", "regError")
-        #     is_valid = False
-        # if user['snapchat'].startswith('@'):
-        #     flash("Snapchat registration must not start with '@'", "regError")
-        #     is_valid = False
-        # if user['linkedin'].startswith('/'):
-        #     flash("LinkedIn registration must not start with '/'", "regError")
-        #     is_valid = False
-        # if user['tiktok'].startswith('@'):
-        #     flash("TikTok registration must not start with '@'", "regError")
-        #     is_valid = False

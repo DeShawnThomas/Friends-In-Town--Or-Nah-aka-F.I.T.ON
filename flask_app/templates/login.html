@@ -6,9 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
+    <script>
+        VANTA.FOG('#my-background')
+    </script>
+
     <title>Login</title>
 </head>
 <body id="my-background">
+    <div id="background-container"></div>
     <div class="container mx-auto main-container rounded-lg">
         <div class="content bg-yellow-200 rounded-lg border-2 border-black">
             <div class="bg-red-400 p-8 rounded-t-md">
@@ -16,7 +25,23 @@
                 <div class="title text-4xl font-bold text-white mb-8 text-right">Login</div>
             </div>
             <div class="p-8">
-                <form action="/returning" method="post">
+                <script>
+                    window.addEventListener('DOMContentLoaded', () => {
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {% for message in messages %}
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Oops...',
+                                        text: '{{ message }}',
+                                        html: '{{ message|safe }}',
+                                    });
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    });
+                </script>
+                    <form action="/returning" method="post">
                     <div class="mb-4">
                         <label for="email" class="text-lg font-semibold">Email or Phone Number:</label>
                         <input type="text" id="email" name="email" class="border border-gray-300 p-2 rounded-md w-full">

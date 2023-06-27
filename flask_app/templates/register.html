@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <title>Registration</title>
 </head>
 <body id="my-background">
@@ -16,8 +18,21 @@
                 <a href="{{ url_for('login') }}" class="float-right text-white p-8">Already have an account? Click here to login.</a>
                 <div class="title text-4xl font-bold text-white mb-8 p-8">Registration</div>
             </div>
-
-            <h1 class="text-2xl font-bold text-center mt-8">WAIT! Has someone registered a group for you and your friends? If not, click this big button first and make a group and get an ID #.</h1>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: '{{ message | safe }}',
+                                confirmButtonText: 'OK'
+                            });
+                        </script>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}            
+        <h1 class="text-2xl font-bold text-center mt-8">WAIT! Has someone registered a group for you and your friends? If not, click this big button first and make a group and get an ID #.</h1>
             <div class="flex justify-center m-6">
                 <button onclick="window.location.href='/create-group'" class="bg-red-500 hover:bg-red-700 text-white font-semibold px-8 py-4 rounded-md mb-4">Create Group and Get ID</button>            
             </div>
@@ -137,7 +152,6 @@
             
         </div>
     </div>
-    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.fog.min.js"></script>
