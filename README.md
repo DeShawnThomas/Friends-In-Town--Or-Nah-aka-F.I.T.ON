@@ -1,4 +1,4 @@
-# F.I.T.O.N-Friend-In-Town-Or-Nah
+# F.I.T.O.N-Friends-In-Town-Or-Nah
 First Solo Project post Coding Dojo graduation
 
 ## Description 
